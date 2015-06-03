@@ -24,7 +24,7 @@
         <organism>
             <x_pos>0</x_pos>
             <y_pos>4</y_pos>
-            <species>B</species>
+            <species>C</species>
         </organism>
         <organism>
             <x_pos>1</x_pos>
@@ -48,11 +48,6 @@
         </organism>
         <organism>
             <x_pos>2</x_pos>
-            <y_pos>4</y_pos>
-            <species>B</species>
-        </organism>
-        <organism>
-            <x_pos>2</x_pos>
             <y_pos>5</y_pos>
             <species>C</species>
         </organism>
@@ -69,7 +64,7 @@
         <organism>
             <x_pos>3</x_pos>
             <y_pos>3</y_pos>
-            <species>B</species>
+            <species>A</species>
         </organism>
         <organism>
             <x_pos>3</x_pos>
@@ -89,12 +84,27 @@
         <organism>
             <x_pos>4</x_pos>
             <y_pos>1</y_pos>
-            <species>B</species>
+            <species>A</species>
         </organism>
         <organism>
             <x_pos>4</x_pos>
             <y_pos>4</y_pos>
             <species>C</species>
+        </organism>
+        <organism>
+            <x_pos>0</x_pos>
+            <y_pos>3</y_pos>
+            <species>C</species>
+        </organism>
+        <organism>
+            <x_pos>1</x_pos>
+            <y_pos>4</y_pos>
+            <species>C</species>
+        </organism>
+        <organism>
+            <x_pos>5</x_pos>
+            <y_pos>2</y_pos>
+            <species>A</species>
         </organism>
     </organisms>
 </life>
