@@ -8,6 +8,9 @@ class World {
 	// world matrix
 	public $world;
 
+	// render world for debugging and admiration
+	public $renderWorldInConsole;
+
 
 	public function __construct($configuration,$organisms) {
 		$this->numberOfCells = $configuration['cells'];
@@ -18,7 +21,7 @@ class World {
 				$this->world[$y][$x] = "0";
 			}
 		}
-
+		
 		// fill organisms into world
 		foreach($organisms['organism'] as $organism) {
 			$y = $organism['y_pos'];
@@ -40,13 +43,15 @@ class World {
 			}
 		}
 
-		// render for debug
+		// initial state render
+		echo "Initial State\n";
 		for($y = 0;$y<$this->numberOfCells;$y++) {
 			for($x = 0;$x<$this->numberOfCells;$x++) {
 				echo $this->world[$y][$x];
 			}
 			echo "\n";
-		}				
+		}
+		echo "\n";
 	}
 
 
@@ -96,14 +101,19 @@ class World {
 			$this->world[$value['1']][$value['0']] = "0";
 		}
 
-		echo "\n";
-		//render for debug
-		for($y = 0;$y<$this->numberOfCells;$y++) {
-			for($x = 0;$x<$this->numberOfCells;$x++) {
-				echo $this->world[$y][$x];
+		//render world
+		if($this->renderWorldInConsole) {
+			for($y = 0;$y<$this->numberOfCells;$y++) {
+				for($x = 0;$x<$this->numberOfCells;$x++) {
+					echo $this->world[$y][$x];
+				}
+				echo "\n";
 			}
+
 			echo "\n";
 		}
+
+		return $this->world;
 
 	}
 
