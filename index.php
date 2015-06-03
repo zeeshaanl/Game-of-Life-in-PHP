@@ -16,6 +16,7 @@ $world->renderWorldInConsole = true;
 
 $numberOfIterations = $initialArray['world']['iterations'];
 
+// iterate through the states of the world
 for($i = 1; $i <= $numberOfIterations; $i++) {
 	echo ($world->renderWorldInConsole)?  $i."\n" : "";
 	$finalWorld = $world->iterate();
