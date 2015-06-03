@@ -11,7 +11,7 @@ class World {
 	// render world for debugging and admiration
 	public $renderWorldInConsole;
 
-
+	// constructor class to generate world and fill it with organisms based on the initial conditions
 	public function __construct($configuration,$organisms) {
 		$this->numberOfCells = $configuration['cells'];
 
@@ -56,12 +56,14 @@ class World {
 
 
 	function iterate() {
-
+		// initialise co-ordinates for later storage of birth and death information
 		$dyingCellCoordinates = array();
 		$bornCellCoordinates = array();	
+
+		// last index of array
 		$lastIndex = $this->numberOfCells - 1;	
 
-		// check condition for each iteration
+		// check conditions for each cell
 		for($y = 0;$y<$this->numberOfCells;$y++) {
 			for($x = 0;$x<$this->numberOfCells;$x++) {
 				$cellOccupant = $this->world[$y][$x];
@@ -92,7 +94,8 @@ class World {
 				}
 			}
 		}
-		//print_r($bornCellCoordinates);
+
+		//carry out fate of cell as final part of iteration
 		foreach ($bornCellCoordinates as $key => $value) {
 			$this->world[$value['1']][$value['0']] = $value[2];
 		}
@@ -117,45 +120,46 @@ class World {
 
 	}
 
-	// get co-ordinates of cells that will die
+	// get co-ordinates of cells that will die at the end of the state
 	function dyingCells($x, $y, $cellOccupant, $neighbourDetailCount) {
 
 		// check if organism lives in cell
 		if($cellOccupant != "0") {
-			//echo $cellOccupant." = ";
-			//print_r($neighbourDetailCount)."\n";
+
+			//check if no neighbbours present
 			$anyNeighbourExists = array_key_exists($cellOccupant, $neighbourDetailCount);
-			//var_dump($neighbourExists);
+
 			// get nearby species that are greater in number than 3
 			$highSpecies = array_filter($neighbourDetailCount, function($var){return ($var > 3 || $var < 2);});
 
 			//ignore dead neighbours
 			unset($highSpecies['0']);
 
-			$notNeighboursExist = array_key_exists($cellOccupant, $highSpecies);
+			//check if neighbouring species matches cell species
+			$doNeighboursExist = array_key_exists($cellOccupant, $highSpecies);
 
 			// kill cells that have more than 3 or less than 2 neighbours of the same species
-			if($notNeighboursExist == true || ($anyNeighbourExists == false)) {
+			if($doNeighboursExist == true || ($anyNeighbourExists == false)) {
 				$dyingCoordinates = array($x,$y);
 				return $dyingCoordinates;
 			}
 		}
 	}
 
-	// get co-ordinates of cells that will be born
+	// get co-ordinates of cells that will be born at the end of the state
 	function bornCells($x, $y, $cellOccupant, $neighbourDetailCount) {
 
 		// check if organism lives within cell
 		if($cellOccupant == "0") {
 
 			// find neighbours than number exactly 3
-			//print_r($neighbourDetailCount);
 			$lifeSpecies = array_filter($neighbourDetailCount, function($var){return ($var == 3);});
 			
 			// ignore dead neighbours
 			unset($lifeSpecies['0']);
 
-			//if exactly 3 of more than one species are neighbours, a random species is selected
+			//if exactly 3 of more than one species are neighbours(birth parent is disputed), 
+			//a random species is selected from the parents
 			if( count($lifeSpecies) == 2 ) {
 				if(mt_rand(0,1)) {
 					array_splice($lifeSpecies, 0, 1);
@@ -165,7 +169,7 @@ class World {
 				}
 			}
 						
-			//give birth in cells which have 3 neighbours of the same species			
+			//give birth in cells which have 3 neighbours of the same species, child of same species born	
 			foreach ($lifeSpecies as $key => $value) {
 				$bornCoordinates = array($x,$y,$key);
 				return $bornCoordinates;

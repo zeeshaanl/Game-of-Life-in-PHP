@@ -63,6 +63,7 @@ function xmlOutput($settings, $world)
 	}
 
 	$dom->save( __DIR__ . '/output.xml');
+	echo "\nFinal world conditions written to XML file.\n";
 }
 
 ?>
