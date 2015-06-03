@@ -11,6 +11,11 @@ $initialArray = json_decode($json,TRUE);
 // create world
 $world = new World($initialArray['world'], $initialArray['organisms']);
 
-$world->iterate();
+$numberOfIterations = $initialArray['world']['iterations'];
+
+for($i = 0; $i < $numberOfIterations; $i++) {
+	echo "\n";
+	$world->iterate();
+}
 
 ?>

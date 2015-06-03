@@ -38,14 +38,7 @@ class World {
 					continue;
 				}
 			}
-		}				
-	}
-
-
-	function iterate() {
-
-		$dyingCellCoordinates = array();
-		$bornCellCoordinates = array();
+		}
 
 		// render for debug
 		for($y = 0;$y<$this->numberOfCells;$y++) {
@@ -53,7 +46,15 @@ class World {
 				echo $this->world[$y][$x];
 			}
 			echo "\n";
-		}
+		}				
+	}
+
+
+	function iterate() {
+
+		$dyingCellCoordinates = array();
+		$bornCellCoordinates = array();	
+		$lastIndex = $this->numberOfCells - 1;	
 
 		// check condition for each iteration
 		for($y = 0;$y<$this->numberOfCells;$y++) {
@@ -64,11 +65,11 @@ class World {
 				$neighbours[$cellOccupant] = array(
 					"top-left"     => ($x>0  && $y>0)? $this->world[$y-1][$x-1] : NULL,
 					"left"         => ($x>0)?          $this->world[$y][$x-1]   : NULL,
-					"bottom-left"  => ($x>0  && $y<5)? $this->world[$y+1][$x-1] : NULL,
-					"bottom"       => ($y<5)?          $this->world[$y+1][$x]   : NULL,
-					"bottom-right" => ($x<5  && $y<5)? $this->world[$y+1][$x+1] : NULL,
-					"right"        => ($x<5)?          $this->world[$y][$x+1]   : NULL,
-					"top-right"    => ($x<5  && $y>0)? $this->world[$y-1][$x+1] : NULL,
+					"bottom-left"  => ($x>0  && $y<$lastIndex)? $this->world[$y+1][$x-1] : NULL,
+					"bottom"       => ($y<$lastIndex)?          $this->world[$y+1][$x]   : NULL,
+					"bottom-right" => ($x<$lastIndex  && $y<$lastIndex)? $this->world[$y+1][$x+1] : NULL,
+					"right"        => ($x<$lastIndex)?          $this->world[$y][$x+1]   : NULL,
+					"top-right"    => ($x<$lastIndex  && $y>0)? $this->world[$y-1][$x+1] : NULL,
 					"top"          => ($y>0)?          $this->world[$y-1][$x]   : NULL,
 					);
 
@@ -81,16 +82,22 @@ class World {
 				}
 
 				// call newborn cell coordinate determining function
-				$bornCellCoordinates[] = $this->bornCells($x, $y, $cellOccupant, $neighbourDetailCount);
-				//print_r($bornCellCoordinates);				
+				if($this->bornCells($x, $y, $cellOccupant, $neighbourDetailCount) != "") {
+					$bornCellCoordinates[] = $this->bornCells($x, $y, $cellOccupant, $neighbourDetailCount);					
+				}
 			}
+		}
+		//print_r($bornCellCoordinates);
+		foreach ($bornCellCoordinates as $key => $value) {
+			$this->world[$value['1']][$value['0']] = $value[2];
 		}
 
 		foreach ($dyingCellCoordinates as $key => $value) {
 			$this->world[$value['1']][$value['0']] = "0";
 		}
-		echo "\n\n";
-		// render for debug
+
+		echo "\n";
+		//render for debug
 		for($y = 0;$y<$this->numberOfCells;$y++) {
 			for($x = 0;$x<$this->numberOfCells;$x++) {
 				echo $this->world[$y][$x];
@@ -105,19 +112,22 @@ class World {
 
 		// check if organism lives in cell
 		if($cellOccupant != "0") {
-
+			//echo $cellOccupant." = ";
+			//print_r($neighbourDetailCount)."\n";
+			$anyNeighbourExists = array_key_exists($cellOccupant, $neighbourDetailCount);
+			//var_dump($neighbourExists);
 			// get nearby species that are greater in number than 3
-			$highSpecies = array_filter($neighbourDetailCount, function($var){return ($var > 3);});
+			$highSpecies = array_filter($neighbourDetailCount, function($var){return ($var > 3 || $var < 2);});
 
 			//ignore dead neighbours
 			unset($highSpecies['0']);
 
-			// kill cells that have more than 3 neighbours of the same species
-			foreach ($highSpecies as $key => $value) {
-				if($key == $cellOccupant) {
-					$dyingCoordinates = array($x,$y);
-					return $dyingCoordinates;
-				}
+			$notNeighboursExist = array_key_exists($cellOccupant, $highSpecies);
+
+			// kill cells that have more than 3 or less than 2 neighbours of the same species
+			if($notNeighboursExist == true || ($anyNeighbourExists == false)) {
+				$dyingCoordinates = array($x,$y);
+				return $dyingCoordinates;
 			}
 		}
 	}
