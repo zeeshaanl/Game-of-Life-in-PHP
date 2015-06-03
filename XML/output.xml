@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<life>
+  <world>
+    <cells>7</cells>
+    <species>3</species>
+    <iterations>20</iterations>
+  </world>
+  <organisms>
+    <organism>
+      <x_pos>3</x_pos>
+      <y_pos>2</y_pos>
+      <species>C</species>
+    </organism>
+    <organism>
+      <x_pos>4</x_pos>
+      <y_pos>2</y_pos>
+      <species>C</species>
+    </organism>
+    <organism>
+      <x_pos>3</x_pos>
+      <y_pos>3</y_pos>
+      <species>C</species>
+    </organism>
+    <organism>
+      <x_pos>4</x_pos>
+      <y_pos>3</y_pos>
+      <species>C</species>
+    </organism>
+  </organisms>
+</life>

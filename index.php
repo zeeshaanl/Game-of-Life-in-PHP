@@ -1,9 +1,9 @@
 <?php
 
-require_once 'World.php';
+require_once 'class/World.php';
 
 // get initial conditions from XML file and convert it to an associative array
-$xmlFile = file_get_contents('input.xml', true);
+$xmlFile = file_get_contents('XML/input.xml', true);
 $xml = simplexml_load_string($xmlFile);
 $json = json_encode($xml);
 $initialArray = json_decode($json,TRUE);
@@ -63,8 +63,14 @@ function xmlOutput($settings, $world)
 		}
 	}
 
-	$dom->save( __DIR__ . '/output.xml');
-	echo "\nFinal world conditions written to XML file.\n";
+	$writesuccess = $dom->save( __DIR__ . '/XML/output.xml');
+	
+	if($writesuccess) {
+		echo "\nFinal world conditions written to XML file.\n";
+	}
+	else {
+		echo "\nError writing to file.\n";
+	}
 }
 
 ?>
