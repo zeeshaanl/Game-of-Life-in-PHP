@@ -1,6 +1,6 @@
 <?php
 
-require_once 'class/World.php';
+require_once 'Class/World.php';
 
 // get initial conditions from XML file and convert it to an associative array
 $xmlFile = file_get_contents('XML/input.xml', true);
