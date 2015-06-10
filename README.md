@@ -1,4 +1,4 @@
-The World Project
+The Game of Life
 
 -Run the game from index.php
 
