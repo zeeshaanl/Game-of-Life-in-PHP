@@ -1,4 +1,4 @@
-The Game of Life
+The classic computer science program - Conway's Game of Life
 
 -Run the game from index.php
 
